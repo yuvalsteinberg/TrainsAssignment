@@ -19,7 +19,8 @@ class TripsProcessor {
         this.graph = graph;
     }
 
-    public List<TripData> dfsStationsWithRestriction(
+    // Find all the possible trips from source to target that follows the given restriction
+    public List<TripData> findTripsWithRestriction(
             String source,
             String target,
             int requiredRestriction,
@@ -38,6 +39,8 @@ class TripsProcessor {
         return foundTrips;
     }
 
+    // DFS from the last station (last of `tripFromSource` to target
+    // while updating `foundTrips` with trips that follows the given restriction
     private void dfsStationsWithRestrictionRecursive(String target,
                                                      List<String> tripFromSource,
                                                      int distanceFromSource,
@@ -60,6 +63,9 @@ class TripsProcessor {
                 );
     }
 
+    // Check if the route from previous to next station is relevant for the trip or continuation of the DFS.
+    // If relevant for the trip - add it
+    // If need to continue - continue the DFS
     private void dfsNextStationWithRestriction(String target,
                                                String previousStation,
                                                String nextStation,
@@ -133,6 +139,7 @@ class TripsProcessor {
         }
     }
 
+    // Check if should not process the station (node) in case of shortest trip
     private boolean shouldNotProcessOnShortestTrip(String nextStation, List<String> tripFromSource) {
         int size = tripFromSource.size();
         return (size > 1) && tripFromSource.subList(1, tripFromSource.size() - 1).contains(nextStation);

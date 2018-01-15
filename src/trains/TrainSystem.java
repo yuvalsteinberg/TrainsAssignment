@@ -42,17 +42,17 @@ public class TrainSystem {
 
     // Extract all the possible trips between 2 stops with restrictions on the maximnum number of stops
     public List<TripData> extractAllTripsBetweenStationsWithMaximumStops(String source, String target, int requiredStops) {
-        return tripsProcessor.dfsStationsWithRestriction(source, target, requiredStops, TripsProcessor.RestrictionType.STOPS_MAXIMUM);
+        return tripsProcessor.findTripsWithRestriction(source, target, requiredStops, TripsProcessor.RestrictionType.STOPS_MAXIMUM);
     }
 
     // Extract all the possible trips between 2 stops with restrictions on the exact number of stops
     public List<TripData> extractAllTripsBetweenStationsWithExactStops(String source, String target, int requiredStops) {
-        return tripsProcessor.dfsStationsWithRestriction(source, target, requiredStops, TripsProcessor.RestrictionType.STOPS_EXACT);
+        return tripsProcessor.findTripsWithRestriction(source, target, requiredStops, TripsProcessor.RestrictionType.STOPS_EXACT);
     }
 
     // Find the shortest trip between 2 stations (null if no such exists)
     public TripData findShortestTrip(String source, String target) {
-        return tripsProcessor.dfsStationsWithRestriction(source, target, 0, TripsProcessor.RestrictionType.SHORTEST_TRIP)
+        return tripsProcessor.findTripsWithRestriction(source, target, 0, TripsProcessor.RestrictionType.SHORTEST_TRIP)
                 .stream()
                 .min(Comparator.comparing(TripData::getDistance))
                 .orElse(null);
@@ -60,7 +60,7 @@ public class TrainSystem {
 
     public List<TripData> extractTripsWithDistanceLessThan(String source, String target, int distance) {
         TripsProcessor tripsProcessor = new TripsProcessor(graph);
-        return tripsProcessor.dfsStationsWithRestriction(source, target, distance, TripsProcessor.RestrictionType.DISTANCE_MAXIMUM);
+        return tripsProcessor.findTripsWithRestriction(source, target, distance, TripsProcessor.RestrictionType.DISTANCE_MAXIMUM);
     }
 
 
