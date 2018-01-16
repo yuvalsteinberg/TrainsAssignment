@@ -4,25 +4,34 @@ import trains.TripData;
 import java.util.List;
 
 public class Tests {
-    private static final String GRAPH_STR = "AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7";
+    private static final String DEFAULT_GRAPH_STR = "AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7";
 
     public static void main(String[] args) {
-        TrainSystem trainSystem = initializeTrainSystem();
+        TrainSystem trainSystem = initializeTrainSystem(args);
 
         runTests(trainSystem);
     }
 
-    private static TrainSystem initializeTrainSystem() {
+    private static TrainSystem initializeTrainSystem(String[] args) {
+        String graphStr = extractGraphStr(args);
         TrainSystem trainSystem = new TrainSystem();
 
         try {
-            trainSystem.build(GRAPH_STR);
+            trainSystem.build(graphStr);
         } catch (Exception ex) {
             System.out.println("Failed to build the Train System: " + ex.getMessage());
             System.exit(-1);
         }
 
         return trainSystem;
+    }
+
+    private static String extractGraphStr(String[] args) {
+        if (args.length > 0) {
+            return args[0];
+        }
+
+        return DEFAULT_GRAPH_STR;
     }
 
     private static void runTests(TrainSystem trainSystem) {
@@ -75,12 +84,14 @@ public class Tests {
 
     private static void test8(TrainSystem trainSystem) {
         TripData shortestTrip = trainSystem.findShortestTrip("A", "C");
-        System.out.println(String.format("Output #8: %s", shortestTrip.getDistance()));
+        Integer distance = shortestTrip != null ? shortestTrip.getDistance() : null;
+        System.out.println(String.format("Output #8: %s", distance));
     }
 
     private static void test9(TrainSystem trainSystem) {
         TripData shortestTrip = trainSystem.findShortestTrip("B", "B");
-        System.out.println(String.format("Output #9: %s", shortestTrip.getDistance()));
+        Integer distance = shortestTrip != null ? shortestTrip.getDistance() : null;
+        System.out.println(String.format("Output #9: %s", distance));
     }
 
     private static void test10(TrainSystem trainSystem) {
